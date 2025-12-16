@@ -1,0 +1,172 @@
+clear
+close all
+data_path='C:\foldername';        
+filedir=dir(data_path);
+filenames = {filedir.name};
+cnt=1;
+for i = 1 : length( filedir )
+    if( isequal( filedir( i ).name, '.' )||...
+            isequal( filedir( i ).name, '..')||...
+            ~filedir( i ).isdir)%或者文件不是一个文件夹
+        continue;
+    end
+    subdirpath = fullfile( data_path, filedir( i ).name);     
+    sub1dir= dir( subdirpath );                                             
+    for q=1:length(sub1dir)
+        if( isequal( sub1dir(q).name, '.' )||...
+                isequal( sub1dir(q).name, '..'))
+            continue;
+        end
+        
+        mark=strfind(sub1dir(q).name,'Rodent Sleep Report (whole');    
+        if ~isempty(mark)
+            filename=fullfile( subdirpath, sub1dir(q).name);
+            [name,txt,raw]= xlsread(filename);
+             percentagewake(cnt)=raw{63,11};
+             percentagerem(cnt)=raw{65,11};
+             perpercentagenrem(cnt)=raw{66,11};
+             percentagemicroarousal(cnt)=raw{64,11};
+                       
+            COUNTWAKE(cnt)=raw{87,6};
+            COUNTREM(cnt)=raw{88,6};
+            COUNTNREM(cnt)=raw{89,6};
+            COUNTmicroarousal(cnt)=raw{86,6};
+            MEANDURATIONWAKE(cnt)=raw{87,10};
+            MEANDURATIONREM(cnt)=raw{88,10};
+            MEANDURATIONNREM(cnt)=raw{89,10};
+            MEANDURATIOmicroarousal(cnt)=raw{86,10};
+             WAKEvNREM(cnt)=raw{75,19};
+            REMvWAKE(cnt)=raw{77,7};
+            REMvNREM(cnt)=raw{77,19};
+            REMvmicroarousal(cnt)=raw{77,11};
+            NREMvmicroarousal(cnt)=raw{78,11};
+            NREMvWAKE(cnt)=raw{78,7};
+            NREMvREM(cnt)=raw{78,15};
+            totalscoringtime(cnt)=raw{21,13};
+            totalsleeptime(cnt)=raw{23,13};
+            waketimeaftersleeponset(cnt)=raw{25,13};
+            sleepperiod(cnt)=raw{26,13};
+            sleeponset(cnt)=raw{28,13};
+            NREMonset(cnt)=raw{30,13};
+            REMonset(cnt)=raw{31,13};
+            
+            cnt=cnt+1;
+            
+        end
+        
+    end
+end
+filenames=filenames(1,3:cnt+1);
+A=[percentagewake;percentagerem;perpercentagenrem;percentagemicroarousal;COUNTWAKE;COUNTREM;COUNTNREM; COUNTmicroarousal;MEANDURATIONWAKE;MEANDURATIONREM; MEANDURATIONNREM;MEANDURATIOmicroarousal; WAKEvNREM; REMvWAKE; REMvNREM;NREMvWAKE;NREMvREM;REMvmicroarousal;NREMvmicroarousal; totalscoringtime;totalsleeptime; waketimeaftersleeponset;sleepperiod;sleeponset;NREMonset;REMonset];
+xlswrite([data_path,'\bout.xls'],A);
+
+
+cnt=1;
+for i = 1 : length( filedir )
+    if( isequal( filedir( i ).name, '.' )
+            isequal( filedir( i ).name, '..')
+            ~filedir( i ).isdir)%或者文件不是一个文件夹
+        continue;
+    end
+    subdirpath = fullfile( data_path, filedir( i ).name);   
+    sub1dir= dir( subdirpath );                                                
+    for q=1:length(sub1dir)
+        if( isequal( sub1dir(q).name, '.' )||...
+                isequal( sub1dir(q).name, '..'))
+            continue;
+        end
+        
+        mark=strfind(sub1dir(q).name,'Rodent Sleep Report (dark');    
+        if ~isempty(mark)
+            filename=fullfile( subdirpath, sub1dir(q).name);
+            [name,txt,raw]= xlsread(filename);
+            percentagewakedark(cnt)=raw{63,11};
+            percentageremdark(cnt)=raw{65,11};
+            perpercentagenremdark(cnt)=raw{66,11};
+            percentagemicroarousaldark(cnt)=raw{64,11};    
+            COUNTWAKEdark(cnt)=raw{87,6};
+            COUNTREMdark(cnt)=raw{88,6};
+            COUNTNREMdark(cnt)=raw{89,6};
+            COUNTmicroarousaldark(cnt)=raw{86,6};
+            MEANDURATIONWAKEdark(cnt)=raw{87,10};
+            MEANDURATIONREMdark(cnt)=raw{88,10};
+            MEANDURATIONNREMdark(cnt)=raw{89,10};
+            MEANDURATIOmicroarousaldark(cnt)=raw{86,10};
+            WAKEvNREMdark(cnt)=raw{75,19};
+            REMvWAKEdark(cnt)=raw{77,7};
+            REMvNREMdark(cnt)=raw{77,19};
+            NREMvWAKEdark(cnt)=raw{78,7};
+            NREMvREMdark(cnt)=raw{78,15};
+            REMvmicroarousaldark(cnt)=raw{77,11};
+            NREMvmicroarousaldark(cnt)=raw{78,11};
+            totalscoringtime(cnt)=raw{21,13};
+            totalsleeptime(cnt)=raw{23,13};
+            waketimeaftersleeponset(cnt)=raw{25,13};
+            sleepperiod(cnt)=raw{26,13};
+            sleeponset(cnt)=raw{28,13};
+            NREMonset(cnt)=raw{30,13};
+            REMonset(cnt)=raw{31,13};
+            cnt=cnt+1;
+            
+        end
+        
+    end
+end
+B=[percentagewakedark;percentageremdark;perpercentagenremdark;percentagemicroarousaldark;COUNTWAKEdark;COUNTREMdark;COUNTNREMdark; COUNTmicroarousaldark;MEANDURATIONWAKEdark;MEANDURATIONREMdark; MEANDURATIONNREMdark;MEANDURATIOmicroarousaldark;WAKEvNREMdark; REMvWAKEdark; REMvNREMdark;NREMvWAKEdark;NREMvREMdark;REMvmicroarousaldark;NREMvmicroarousaldark; totalscoringtime;totalsleeptime; waketimeaftersleeponset;sleepperiod;sleeponset;NREMonset;REMonset;];
+xlswrite([data_path,'\bout(dark).xls'],B);
+
+cnt=1;
+for i = 1 : length( filedir )
+    if( isequal( filedir( i ).name, '.' )
+            isequal( filedir( i ).name, '..')
+            ~filedir( i ).isdir)%或者文件不是一个文件夹
+        continue;
+    end
+    subdirpath = fullfile( data_path, filedir( i ).name);    
+    sub1dir= dir( subdirpath );                                               
+    for q=1:length(sub1dir)
+        if( isequal( sub1dir(q).name, '.' )||...
+                isequal( sub1dir(q).name, '..'))
+            continue;
+        end
+        
+        mark=strfind(sub1dir(q).name,'Rodent Sleep Report (light');    
+        if ~isempty(mark)
+            filename=fullfile( subdirpath, sub1dir(q).name);
+            [name,txt,raw]= xlsread(filename);
+            
+            percentagewakelight(cnt)=raw{63,11};
+             percentageremlight(cnt)=raw{65,11};
+             perpercentagenremlight(cnt)=raw{66,11};
+             percentagemicroarousallight(cnt)=raw{64,11};
+                       
+            COUNTWAKElight(cnt)=raw{87,6};
+            COUNTREMlight(cnt)=raw{88,6};
+            COUNTNREMlight(cnt)=raw{89,6};
+            COUNTmicroarousallight(cnt)=raw{86,6};
+            MEANDURATIONWAKElight(cnt)=raw{87,10};
+            MEANDURATIONREMlight(cnt)=raw{88,10};
+            MEANDURATIONNREMlight(cnt)=raw{89,10};
+            MEANDURATIOmicroarousallight(cnt)=raw{86,10};
+             WAKEvNREMlight(cnt)=raw{75,19};
+            REMvWAKElight(cnt)=raw{77,7};
+            REMvNREMlight(cnt)=raw{77,19};
+            NREMvWAKElight(cnt)=raw{78,7};
+            NREMvREMlight(cnt)=raw{78,15};
+            REMvmicroarousallight(cnt)=raw{77,11};
+            NREMvmicroarousallight(cnt)=raw{78,11};
+            totalscoringtime(cnt)=raw{21,13};
+            totalsleeptime(cnt)=raw{23,13};
+            waketimeaftersleeponset(cnt)=raw{25,13};
+            sleepperiod(cnt)=raw{26,13};
+            sleeponset(cnt)=raw{28,13};
+            NREMonset(cnt)=raw{30,13};
+            REMonset(cnt)=raw{31,13};
+            cnt=cnt+1;
+            
+        end
+        
+    end
+end
+C=[percentagewakelight;percentageremlight;perpercentagenremlight;percentagemicroarousallight;COUNTWAKElight;COUNTREMlight;COUNTNREMlight; COUNTmicroarousallight;MEANDURATIONWAKElight;MEANDURATIONREMlight; MEANDURATIONNREMlight;MEANDURATIOmicroarousallight;WAKEvNREMlight; REMvWAKElight; REMvNREMlight;NREMvWAKElight;NREMvREMlight;REMvmicroarousallight;NREMvmicroarousallight; totalscoringtime;totalsleeptime; waketimeaftersleeponset;sleepperiod;sleeponset;NREMonset;REMonset;];
+xlswrite([data_path,'\bout(light).xls'],C);
